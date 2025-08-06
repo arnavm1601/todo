@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced To-Do List</title>
-    <link rel="stylesheet" href="to-do.css">
+    <link rel="stylesheet" href="todo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -55,20 +55,18 @@
                 <div class="todolists"></div>
             </div>
             <div class="right-pane">
-                <div class="timer-section">
-                    <h2>Task Timer</h2>
-                    <div class="timer-display" id="timer-display">25:00</div>
-                    <div class="timer-controls">
-                        <button id="start-timer" class="timer-btn">Start</button>
-                        <button id="pause-timer" class="timer-btn">Pause</button>
-                        <button id="reset-timer" class="timer-btn">Reset</button>
+                <div class="task-details-section">
+                    <h2>Task Scheduling</h2>
+                    <textarea class="todovalue" placeholder="Enter Your Task"></textarea>
+                    <div class="task-options">
+                        <input type="date" id="task-due-date" title="Due Date">
+                        <input type="number" id="task-estimated-time" placeholder="Time (mins)" title="Estimated Time">
                     </div>
                 </div>
-                <textarea class="todovalue" placeholder="Enter Your Task"></textarea>
                 <button class="add">Add Task</button>
             </div>
         </div>
     </div>
-    <script src="to-do.js"></script>
+    <script src="todo.js"></script>
 </body>
 </html>

@@ -1,28 +1,36 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     background-color: #f4f4f4;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
 }
 
 .auth-container {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
     width: 768px;
-    max-width: 100%;
+    max-width: 95%;
     min-height: 480px;
-    display: none; /* Hidden by default */
+    display: none;
+    margin-bottom: 30px;
 }
 
 .auth-container.active {
-    display: flex; /* Show when active */
+    display: flex;
 }
 
 .form-container {
@@ -36,6 +44,10 @@ body {
     left: 0;
     width: 50%;
     z-index: 2;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .auth-container.right-panel-active .sign-in-container {
@@ -47,6 +59,10 @@ body {
     width: 50%;
     opacity: 0;
     z-index: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .auth-container.right-panel-active .sign-up-container {
@@ -74,6 +90,7 @@ input {
     margin: 8px 0;
     width: 100%;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .overlay-container {
@@ -87,7 +104,7 @@ input {
     z-index: 100;
 }
 
-.auth-container.right-panel-active .overlay-container{
+.auth-container.right-panel-active .overlay-container {
     transform: translateX(-100%);
 }
 
@@ -104,6 +121,9 @@ input {
     width: 200%;
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .auth-container.right-panel-active .overlay {
@@ -147,90 +167,114 @@ input {
     border-color: #fff;
 }
 
-/* Main App Styles */
 .main-app {
-    display: flex;
+    display: none;
     flex-direction: column;
-    width: 80%;
-    max-width: 900px;
+    width: 90%;
+    max-width: 1200px;
     background: #fff;
-    padding: 20px;
+    padding: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    display: none; /* Hidden by default */
+    box-sizing: border-box;
 }
 
 .main-app.active {
-    display: flex; /* Show when active */
+    display: flex;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 #logout-btn {
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
 }
 
 .left-pane {
     flex: 2;
-    padding: 10px;
-    border-right: 2px solid #ddd;
+    padding: 20px;
+    border-right: 1px solid #ddd;
 }
 
 .right-pane {
     flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.task-details-section {
+    display: flex;
+    flex-direction: column;
     gap: 15px;
-    padding: 10px;
+    margin-bottom: 20px;
 }
 
 .todovalue {
     width: 100%;
-    height: 100px;
-    padding: 10px;
+    height: 120px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 18px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.task-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.task-options input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
     font-size: 16px;
-    resize: none;
 }
 
 .add {
     width: 100%;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    margin-top: 20px;
+    box-sizing: border-box;
 }
 
 .todolists {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .todolists div {
@@ -238,28 +282,39 @@ header {
     align-items: center;
     justify-content: space-between;
     background: #fff;
-    padding: 10px;
+    padding: 15px; /* Added more padding */
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-size: 18px;
 }
 
-.todolists input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
+.todolists input {
+    margin-right: 15px; /* Added right margin */
+    transform: scale(1.3);
     cursor: pointer;
 }
 
 .todolists span {
     flex-grow: 1;
-    font-size: 16px;
+}
+
+.todolists .task-meta {
+    font-size: 14px;
+    color: #888;
+    margin-top: 8px; /* Added top margin */
+    padding: 5px 10px; /* Added padding */
+    border: 1px solid #ccc; /* Added border */
+    border-radius: 5px; /* Added border-radius */
+    white-space: pre-wrap; /* Allows the text to wrap */
 }
 
 .todolists button {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
-    font-size: 16px;
+    padding: 8px;
+    font-size: 20px;
+    margin-left: 10px; /* Added left margin */
 }
 
 .todolists .delete-btn {
@@ -270,28 +325,4 @@ header {
 .todolists .edit-btn {
     color: blue;
     font-weight: bold;
-}
-
-.timer-section {
-    text-align: center;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-}
-
-.timer-display {
-    font-size: 48px;
-    font-weight: bold;
-    margin: 15px 0;
-}
-
-.timer-controls button {
-    margin: 0 5px;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }

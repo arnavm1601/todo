@@ -13,16 +13,9 @@ const welcomeMessage = document.getElementById('welcome-message');
 const signInBtn = document.getElementById('signIn');
 const signUpBtn = document.getElementById('signUp');
 
-// DOM Elements for Timer
-const timerDisplay = document.getElementById('timer-display');
-const startTimerBtn = document.getElementById('start-timer');
-const pauseTimerBtn = document.getElementById('pause-timer');
-const resetTimerBtn = document.getElementById('reset-timer');
-
-// Timer variables
-let timerInterval;
-let timeInSeconds = 25 * 60;
-let isTimerRunning = false;
+// DOM Elements for Task Details
+const taskDueDateInput = document.getElementById('task-due-date');
+const taskEstimatedTimeInput = document.getElementById('task-estimated-time');
 
 // --- Auth and Session Management ---
 
@@ -32,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showMainApp(activeUser);
     } else {
         authContainer.classList.add('active');
-        mainApp.style.display = 'none';
     }
 });
 
@@ -76,8 +68,8 @@ logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('activeUser');
     mainApp.classList.remove('active');
     authContainer.classList.add('active');
-    tasks = []; // Clear tasks for the next user
-    todoLists.innerHTML = ''; // Clear the UI
+    tasks = [];
+    todoLists.innerHTML = '';
 });
 
 function showMainApp(username) {
@@ -90,48 +82,73 @@ function showMainApp(username) {
 // --- To-Do App Logic (Integrated with user session) ---
 
 add.addEventListener("click", () => {
-    addTask(listValue.value);
+    addTask(listValue.value, taskDueDateInput.value, taskEstimatedTimeInput.value);
 });
 
 listValue.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
-        addTask(listValue.value);
+        addTask(listValue.value, taskDueDateInput.value, taskEstimatedTimeInput.value);
     }
 });
 
-function addTask(taskText) {
+function addTask(taskText, dueDate, estimatedTime) {
     if (taskText.trim() === "") return;
-    let taskObj = { text: taskText, completed: false };
+    let taskObj = { 
+        text: taskText, 
+        completed: false, 
+        dueDate: dueDate, 
+        estimatedTime: estimatedTime 
+    };
     tasks.push(taskObj);
     renderTask(taskObj);
     saveToLocalStorage();
     listValue.value = "";
+    taskDueDateInput.value = "";
+    taskEstimatedTimeInput.value = "";
 }
 
 function renderTask(taskObj) {
     let div = document.createElement('div');
+    div.style.display = "flex";
+    div.style.alignItems = "center";
+    div.style.gap = "10px";
+    
     let chckbox = document.createElement('input');
     chckbox.type = "checkbox";
     chckbox.checked = taskObj.completed;
     chckbox.addEventListener("click", function () {
         taskObj.completed = chckbox.checked;
-        span.style.textDecoration = taskObj.completed ? "line-through" : "none";
+        taskTextContainer.style.textDecoration = taskObj.completed ? "line-through" : "none";
         saveToLocalStorage();
     });
+
+    let taskTextContainer = document.createElement('div');
+    taskTextContainer.style.flexGrow = "1";
+    
     let span = document.createElement('span');
     span.textContent = taskObj.text;
     if (taskObj.completed) {
         span.style.textDecoration = "line-through";
     }
-    let delte = document.createElement('button');
-    delte.textContent = "✖️";
-    delte.classList.add("delete-btn");
-    delte.addEventListener("click", function () {
-        div.remove();
-        tasks = tasks.filter(t => t.text !== taskObj.text);
-        saveToLocalStorage();
-    });
+
+    let metaInfo = document.createElement('div');
+    metaInfo.classList.add('task-meta');
+    let metaText = "";
+    if (taskObj.dueDate) {
+        metaText += `Due: ${taskObj.dueDate}`;
+    }
+    if (taskObj.estimatedTime) {
+        if (metaText) metaText += " | ";
+        metaText += `Est. Time: ${taskObj.estimatedTime} mins`;
+    }
+    metaInfo.textContent = metaText;
+
+    taskTextContainer.appendChild(span);
+    if (metaText) {
+        taskTextContainer.appendChild(metaInfo);
+    }
+    
     let update = document.createElement('button');
     update.textContent = "✏️";
     update.classList.add("edit-btn");
@@ -143,8 +160,18 @@ function renderTask(taskObj) {
             saveToLocalStorage();
         }
     });
+
+    let delte = document.createElement('button');
+    delte.textContent = "✖️";
+    delte.classList.add("delete-btn");
+    delte.addEventListener("click", function () {
+        div.remove();
+        tasks = tasks.filter(t => t.text !== taskObj.text);
+        saveToLocalStorage();
+    });
+
     div.appendChild(chckbox);
-    div.appendChild(span);
+    div.appendChild(taskTextContainer);
     div.appendChild(update);
     div.appendChild(delte);
     todoLists.appendChild(div);
@@ -163,42 +190,4 @@ function loadTasksFromLocalStorage(username) {
         tasks = JSON.parse(storedTasks);
         tasks.forEach(taskObj => renderTask(taskObj));
     }
-}
-
-// --- Timer Logic ---
-
-startTimerBtn.addEventListener('click', () => {
-    if (!isTimerRunning) {
-        isTimerRunning = true;
-        timerInterval = setInterval(updateTimer, 1000);
-    }
-});
-
-pauseTimerBtn.addEventListener('click', () => {
-    isTimerRunning = false;
-    clearInterval(timerInterval);
-});
-
-resetTimerBtn.addEventListener('click', () => {
-    isTimerRunning = false;
-    clearInterval(timerInterval);
-    timeInSeconds = 25 * 60;
-    updateTimerDisplay();
-});
-
-function updateTimer() {
-    if (timeInSeconds > 0) {
-        timeInSeconds--;
-        updateTimerDisplay();
-    } else {
-        clearInterval(timerInterval);
-        isTimerRunning = false;
-        alert("Time's up! Take a break.");
-    }
-}
-
-function updateTimerDisplay() {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
